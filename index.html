@@ -101,7 +101,7 @@
     <section class="mission-strip" aria-label="Thông tin tổng quan" data-reveal>
       <div class="mission-strip__item">
         <span class="mission-strip__index">01</span>
-        <p><strong>Một nguồn dữ liệu</strong><span>Cập nhật trực tiếp từ DR-Documents.csv</span></p>
+        <p><strong>Một nguồn dữ liệu</strong><span>Cập nhật trực tiếp từ Google Sheet qua Apps Script</span></p>
       </div>
       <div class="mission-strip__item">
         <span class="mission-strip__index">02</span>
@@ -134,7 +134,7 @@
       <div class="catalog__error" id="catalog-error" role="alert" hidden>
         <span class="catalog__error-code">SIGNAL LOST</span>
         <h3>Không thể tải danh sách tài liệu</h3>
-        <p>Hãy mở website qua một static server và thử lại. File cần thiết: <code>docs/DR-Documents.csv</code>.</p>
+        <p>Không thể đọc Apps Script hoặc dữ liệu dự phòng. Hãy kiểm tra quyền truy cập Workspace và file <code>datas/DR-Documents-Personal.csv</code>.</p>
         <button class="button button--secondary" type="button" id="retry-button">Thử kết nối lại</button>
       </div>
 
@@ -166,7 +166,7 @@
   </button>
 
   <noscript>
-    <div class="noscript-message">Website cần JavaScript để đọc và hiển thị danh sách từ <code>docs/DR-Documents.csv</code>.</div>
+    <div class="noscript-message">Website cần JavaScript để đọc danh sách từ Apps Script hoặc <code>datas/DR-Documents-Personal.csv</code>.</div>
   </noscript>
 </body>
 </html>

@@ -1,0 +1,18 @@
+Group,GroupCode,GroupDescription,GroupColor,GroupOrder,Tên,Link,DocumentOrder,Active
+Vận hành,OPS,Quy trình và tài liệu vận hành team,#f4c928,1,Ví đào Qubit,https://docs.google.com/spreadsheets/d/1Hh-FW08pidO_QNRjQEc22JdsPqAnUfiQ1jdI3O2Q6uI/edit?gid=1429297102#gid=1429297102,1,TRUE
+Vận hành,OPS,Quy trình và tài liệu vận hành team,#f4c928,1,Action Brainstorm,https://docs.google.com/spreadsheets/d/1PvJmSLBRjj47n8gpyQKutWRVK6N13yWP4kX59gJqSWw/edit?gid=1783110858#gid=1783110858,2,TRUE
+Vận hành,OPS,Quy trình và tài liệu vận hành team,#f4c928,1,Quỹ team / Danh sách nộp phạt,https://docs.google.com/spreadsheets/d/1Nsrj3GkxmVigDMABGUfSRrnDrPivnvR23vLqGR0nuOU/edit?hl=vi&gid=1528797870#gid=1528797870,3,TRUE
+Công việc,WORK,Bảng công việc và dữ liệu dự án,#4868d5,2,Scrum Board DR1,https://inwave.atlassian.net/jira/software/c/projects/DR/boards/22,1,TRUE
+Công việc,WORK,Bảng công việc và dữ liệu dự án,#4868d5,2,Scrum Board DR2,https://inwave.atlassian.net/jira/software/c/projects/DR2/boards/835,2,TRUE
+Công việc,WORK,Bảng công việc và dữ liệu dự án,#4868d5,2,Tài liệu GDD,https://amanotesjsc.atlassian.net/wiki/x/MYB-Tw,3,TRUE
+Công việc,WORK,Bảng công việc và dữ liệu dự án,#4868d5,2,ABTest Result,https://example.com/work/ab-test-result,4,TRUE
+Developer,DEV,Ghi chú kỹ thuật và công cụ phát triển,#38e8f5,3,DEV Notes,https://docs.google.com/spreadsheets/d/1guu5emeS7aOWRjhmcJOe_Q0wnwXirGPoQ0HlPCL0u1Q/edit?gid=0#gid=0,1,TRUE
+Developer,DEV,Ghi chú kỹ thuật và công cụ phát triển,#38e8f5,3,Github Inwave ORG,https://github.com/orgs/inwave-studio/repositories,3,TRUE
+Developer,DEV,Ghi chú kỹ thuật và công cụ phát triển,#38e8f5,3,DEV Workflows,https://github.com/iw-dr-team/docs,2,TRUE
+Game Designer,GD,Tài liệu và template thiết kế game,#ff775f,4,Game Design Document Template,https://amanotesjsc.atlassian.net/wiki/spaces/THE/pages/5324701741/GDD+Template+v2,1,TRUE
+Artist,ART,Quy trình và tài nguyên dành cho artist,#cf318f,5,Workflow: 3D character production,https://docs.google.com/presentation/d/1QuFcQEGdlVPdQtelxoFJStu6-g5qvGD05FHpZw7jUdY,1,TRUE
+Artist,ART,Quy trình và tài nguyên dành cho artist,#cf318f,5,Workflow: 3D Animation Faster With Blender,https://docs.google.com/document/d/1K-UuQPq64V573oaVzZalB-anKZjMk9NSfRNgWccfj7c,2,TRUE
+QC,QC,Tài liệu kiểm thử và theo dõi chất lượng,#ffe04b,6,SDK Version Tracking,https://docs.google.com/spreadsheets/d/1Cs3YKDnOBMwlAKxLjKN1Jd84F3whkMAbRg8xUrStsj0/edit?gid=1655533654#gid=1655533654,1,TRUE
+QC,QC,Tài liệu kiểm thử và theo dõi chất lượng,#ffe04b,6,Event Tracking DR2,https://docs.google.com/spreadsheets/d/1GAHz7LWiteIRE7ZjEMYgtnExBZrSz5gc8I6wYNzqQlQ/edit?gid=1332782936#gid=1332782936,3,TRUE
+QC,QC,Tài liệu kiểm thử và theo dõi chất lượng,#ffe04b,6,Team QC,https://drive.google.com/drive/u/0/folders/1qi-S1vBYqev9p4xpPQ7ydTLNQ8Wpz5P8,4,TRUE
+QC,QC,Tài liệu kiểm thử và theo dõi chất lượng,#ffe04b,6,Event Tracking DR,https://docs.google.com/spreadsheets/d/1l6xSZxfSUcz1ocBKYiYSfxUtgbWepuXdtjLOyqmRhXQ/edit?gid=1332782936#gid=1332782936,2,TRUE

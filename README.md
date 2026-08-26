@@ -24,9 +24,15 @@ npm run preview
 
 Thư mục deploy là `dist/`. Không mở trực tiếp `index.html` bằng `file://`, vì trình duyệt sẽ chặn ES module và việc đọc dữ liệu CSV.
 
-## Cập nhật tài liệu
+## Nguồn dữ liệu
 
-Chỉnh sửa `docs/DR-Documents.csv` với ba cột `Group,Tên,Link`. Các dòng để trống `Group` sẽ tự động thuộc nhóm gần nhất phía trên; dòng hoàn toàn trống sẽ được bỏ qua.
+Website ưu tiên tải CSV từ Apps Script deployment:
+
+`https://script.google.com/a/macros/inwave.vn/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec`
+
+Apps Script đang đọc sheet `DR-Documents-Personal` trong Google Sheet có ID `11hk8kl_FETTGTl925f7QOlt0TA-mkEcQxWSGOvHyGPk`. Khi endpoint không truy cập được, website tự động dùng `datas/DR-Documents-Personal.csv` làm dữ liệu dự phòng.
+
+CSV cần tối thiểu ba cột `Group,Tên,Link`. Các cột `DocumentOrder` và `Active` được dùng để sắp xếp, ẩn/hiện tài liệu. Các dòng để trống `Group` sẽ tự động thuộc nhóm gần nhất phía trên; dòng hoàn toàn trống sẽ được bỏ qua.
 
 ## Deploy
 

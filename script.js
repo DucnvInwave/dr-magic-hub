@@ -1,9 +1,21 @@
-import catalogUrl from "./docs/DR-Documents.csv?url&no-inline";
+import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline";
 
 (function () {
   "use strict";
 
-  const CATALOG_URL = catalogUrl;
+  const APPS_SCRIPT_CATALOG_URL = "https://script.google.com/a/macros/inwave.vn/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec";
+  const CATALOG_SOURCES = [
+    {
+      label: "Apps Script",
+      url: APPS_SCRIPT_CATALOG_URL,
+      credentials: "include"
+    },
+    {
+      label: "CSV local",
+      url: fallbackCatalogUrl,
+      credentials: "same-origin"
+    }
+  ];
   const CATEGORY_DEFINITIONS = [
     { name: "Vận hành", slug: "van-hanh", code: "OPS", accent: "sun", description: "Nhịp vận hành, brainstorm và những đầu việc giúp team chạy trơn tru." },
     { name: "Công việc", slug: "cong-viec", code: "WORK", accent: "cyan", description: "Bảng công việc, GDD và dữ liệu kết quả để giữ mọi dự án đúng hướng." },
@@ -86,6 +98,8 @@ import catalogUrl from "./docs/DR-Documents.csv?url&no-inline";
     const groupIndex = headers.indexOf("Group");
     const nameIndex = headers.indexOf("Tên");
     const linkIndex = headers.indexOf("Link");
+    const activeIndex = headers.indexOf("Active");
+    const documentOrderIndex = headers.indexOf("DocumentOrder");
 
     if (groupIndex === -1 || nameIndex === -1 || linkIndex === -1) {
       throw new Error("CSV must contain Group, Tên, and Link columns.");
@@ -98,7 +112,7 @@ import catalogUrl from "./docs/DR-Documents.csv?url&no-inline";
     const extraCategories = [];
     let currentGroup = "";
 
-    rows.slice(1).forEach((cells) => {
+    rows.slice(1).forEach((cells, rowIndex) => {
       const declaredGroup = (cells[groupIndex] || "").trim();
       const name = (cells[nameIndex] || "").trim();
       const url = (cells[linkIndex] || "").trim();
@@ -108,6 +122,10 @@ import catalogUrl from "./docs/DR-Documents.csv?url&no-inline";
       }
 
       if (!name && !url) {
+        return;
+      }
+
+      if (activeIndex !== -1 && !isActive(cells[activeIndex])) {
         return;
       }
 
@@ -128,8 +146,16 @@ import catalogUrl from "./docs/DR-Documents.csv?url&no-inline";
       catalog.get(groupName).resources.push({
         name: name || "Tài liệu chưa đặt tên",
         url,
-        validUrl: isSafeExternalUrl(url)
+        validUrl: isSafeExternalUrl(url),
+        order: documentOrderIndex === -1 ? rowIndex : getOrder(cells[documentOrderIndex]),
+        rowIndex
       });
+    });
+
+    catalog.forEach((category) => {
+      category.resources.sort((first, second) => (
+        first.order - second.order || first.rowIndex - second.rowIndex
+      ));
     });
 
     return [
@@ -159,6 +185,16 @@ import catalogUrl from "./docs/DR-Documents.csv?url&no-inline";
     } catch (_error) {
       return false;
     }
+  }
+
+  function isActive(value) {
+    const normalized = String(value || "").trim().toUpperCase();
+    return !["FALSE", "0", "NO", "OFF"].includes(normalized);
+  }
+
+  function getOrder(value) {
+    const order = Number.parseFloat(value);
+    return Number.isFinite(order) ? order : Number.MAX_SAFE_INTEGER;
   }
 
   function createSvgIcon(pathData) {
@@ -327,21 +363,48 @@ import catalogUrl from "./docs/DR-Documents.csv?url&no-inline";
     dom.sections.setAttribute("aria-busy", "false");
   }
 
+  async function fetchCatalog(source) {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 8000);
+
+    try {
+      const response = await fetch(source.url, {
+        cache: "no-store",
+        credentials: source.credentials,
+        signal: controller.signal
+      });
+
+      if (!response.ok) {
+        throw new Error(`Catalog request failed with status ${response.status}.`);
+      }
+
+      const csv = await response.text();
+      return normalizeCatalog(parseCsv(csv));
+    } finally {
+      window.clearTimeout(timeout);
+    }
+  }
+
   async function loadCatalog() {
     dom.status.hidden = false;
     dom.error.hidden = true;
     dom.sections.setAttribute("aria-busy", "true");
 
-    try {
-      const response = await fetch(CATALOG_URL, { cache: "no-store" });
-      if (!response.ok) {
-        throw new Error(`Catalog request failed with status ${response.status}.`);
+    let lastError;
+
+    for (const source of CATALOG_SOURCES) {
+      try {
+        const categories = await fetchCatalog(source);
+        document.documentElement.dataset.catalogSource = source.label;
+        renderCatalog(categories);
+        return;
+      } catch (error) {
+        lastError = error;
+        console.warn(`Không thể tải danh mục từ ${source.label}.`, error);
       }
-      const csv = await response.text();
-      renderCatalog(normalizeCatalog(parseCsv(csv)));
-    } catch (error) {
-      showError(error);
     }
+
+    showError(lastError || new Error("Không có nguồn dữ liệu khả dụng."));
   }
 
   function setupCategoryNavigation() {
