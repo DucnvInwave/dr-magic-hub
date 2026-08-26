@@ -3,3 +3,5 @@ openspec
 .agents
 .commandcode
 .saicode
+node_modules
+dist

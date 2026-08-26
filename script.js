@@ -1,7 +1,9 @@
+import catalogUrl from "./docs/DR-Documents.csv?url&no-inline";
+
 (function () {
   "use strict";
 
-  const CATALOG_URL = "docs/DR-Documents.csv";
+  const CATALOG_URL = catalogUrl;
   const CATEGORY_DEFINITIONS = [
     { name: "Vận hành", slug: "van-hanh", code: "OPS", accent: "sun", description: "Nhịp vận hành, brainstorm và những đầu việc giúp team chạy trơn tru." },
     { name: "Công việc", slug: "cong-viec", code: "WORK", accent: "cyan", description: "Bảng công việc, GDD và dữ liệu kết quả để giữ mọi dự án đúng hướng." },
@@ -15,6 +17,7 @@
   let sectionObserver;
   let revealObserver;
   let navigationLockTimer;
+  let backToTopFrame;
 
   function parseCsv(text) {
     if (typeof text !== "string") {
@@ -465,18 +468,69 @@
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
+  function applyTheme(theme, persist = true) {
+    const normalizedTheme = theme === "light" ? "light" : "dark";
+    document.documentElement.dataset.theme = normalizedTheme;
+    dom.themeToggle.setAttribute("aria-pressed", String(normalizedTheme === "light"));
+    dom.themeToggle.setAttribute("aria-label", normalizedTheme === "light" ? "Chuyển sang giao diện tối" : "Chuyển sang giao diện sáng");
+    dom.themeLabel.textContent = normalizedTheme === "light" ? "Sáng" : "Tối";
+    document.querySelector('meta[name="theme-color"]').content = normalizedTheme === "light" ? "#edf4f0" : "#071426";
+
+    if (persist) {
+      try {
+        localStorage.setItem("dr-magic-hub-theme", normalizedTheme);
+      } catch (_error) {
+        // Theme still works when storage is unavailable.
+      }
+    }
+  }
+
+  function setupThemeToggle() {
+    const currentTheme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+    applyTheme(currentTheme, false);
+    dom.themeToggle.addEventListener("click", () => {
+      applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
+    });
+  }
+
+  function setupBackToTop() {
+    function updateVisibility() {
+      backToTopFrame = undefined;
+      const visible = window.scrollY > Math.max(520, window.innerHeight * 0.72);
+      dom.backToTop.classList.toggle("is-visible", visible);
+      dom.backToTop.setAttribute("aria-hidden", String(!visible));
+      dom.backToTop.tabIndex = visible ? 0 : -1;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (!backToTopFrame) {
+        backToTopFrame = requestAnimationFrame(updateVisibility);
+      }
+    }, { passive: true });
+
+    dom.backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    });
+    updateVisibility();
+  }
+
   function initialize() {
     dom.nav = document.getElementById("category-nav");
     dom.sections = document.getElementById("catalog-sections");
     dom.status = document.getElementById("catalog-status");
     dom.error = document.getElementById("catalog-error");
     dom.retry = document.getElementById("retry-button");
+    dom.themeToggle = document.getElementById("theme-toggle");
+    dom.themeLabel = document.querySelector("[data-theme-label]");
+    dom.backToTop = document.getElementById("back-to-top");
 
     document.querySelectorAll("[data-current-year]").forEach((element) => {
       element.textContent = String(new Date().getFullYear());
     });
 
     dom.retry.addEventListener("click", loadCatalog);
+    setupThemeToggle();
+    setupBackToTop();
     setupRevealAnimations();
     setupTiltEffects();
     loadCatalog();

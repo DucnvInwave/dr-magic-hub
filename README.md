@@ -4,19 +4,25 @@ Website tĩnh tập hợp tài liệu và liên kết làm việc của team DR 
 
 ## Chạy local
 
-Yêu cầu Node.js 18 trở lên. Không cần cài package hoặc chạy build.
+Project vẫn dùng HTML/CSS/JavaScript thuần. Vite chỉ làm dev server và đóng gói ES module của Three.js, không sử dụng React hay framework giao diện nào.
+
+Yêu cầu Node.js 20.19+ hoặc 22.12+.
 
 ```powershell
-node serve.mjs
+npm install
+npm run dev
 ```
 
-Mở `http://127.0.0.1:4173`. Có thể chọn cổng khác bằng cách truyền số cổng:
+Mở địa chỉ Vite hiển thị trong terminal (mặc định `http://localhost:5173`).
+
+## Build production
 
 ```powershell
-node serve.mjs 8080
+npm run build
+npm run preview
 ```
 
-Không mở trực tiếp `index.html` bằng `file://`, vì trình duyệt sẽ chặn việc đọc `docs/DR-Documents.csv`.
+Thư mục deploy là `dist/`. Không mở trực tiếp `index.html` bằng `file://`, vì trình duyệt sẽ chặn ES module và việc đọc dữ liệu CSV.
 
 ## Cập nhật tài liệu
 
@@ -24,12 +30,6 @@ Chỉnh sửa `docs/DR-Documents.csv` với ba cột `Group,Tên,Link`. Các dò
 
 ## Deploy
 
-Deploy toàn bộ repository lên bất kỳ dịch vụ static hosting nào và đặt `index.html` làm entry point. Website không cần backend, framework hay bước build. Các file production chính gồm:
+Chạy `npm run build`, sau đó deploy toàn bộ nội dung trong `dist/` lên bất kỳ dịch vụ static hosting nào. Website không cần backend hay framework chạy ở phía client.
 
-- `index.html`
-- `styles.css`
-- `script.js`
-- `assets/icon.png`
-- `docs/DR-Documents.csv`
-
-`serve.mjs` chỉ hỗ trợ chạy thử local và không bắt buộc trên hosting.
+Scene Three.js nằm riêng trong `three-scene.js`; nếu WebGL không khả dụng, giao diện tự động giữ lại mô hình CSS hiện có làm fallback.

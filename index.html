@@ -6,12 +6,24 @@
   <meta name="theme-color" content="#071426">
   <meta name="description" content="DR Magic Hub - trung tâm tài liệu, quy trình và liên kết làm việc dành cho team DR.">
   <title>DR Magic Hub | Team knowledge, one orbit</title>
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem("dr-magic-hub-theme");
+        const preferredTheme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        document.documentElement.dataset.theme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : preferredTheme;
+      } catch (_error) {
+        document.documentElement.dataset.theme = "dark";
+      }
+    }());
+  </script>
   <link rel="icon" type="image/png" href="assets/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Coiny&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+  <script type="module" src="script.js"></script>
+  <script type="module" src="three-scene.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Bỏ qua đến nội dung chính</a>
@@ -30,12 +42,25 @@
       </span>
       <span class="brand__wordmark">DR <strong>Magic Hub</strong></span>
     </a>
-    <a class="header-link" href="#resource-catalog">
-      <span>Khám phá tài liệu</span>
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M5 12h14M13 6l6 6-6 6"/>
-      </svg>
-    </a>
+    <div class="header-actions">
+      <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Chuyển giao diện sáng/tối">
+        <span class="theme-toggle__icons" aria-hidden="true">
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/>
+          </svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24">
+            <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4a8.5 8.5 0 1 0 11.2 11.2Z"/>
+          </svg>
+        </span>
+        <span class="theme-toggle__label" data-theme-label>Tối</span>
+      </button>
+      <a class="header-link" href="#resource-catalog">
+        <span>Khám phá tài liệu</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
+    </div>
   </header>
 
   <main id="main-content">
@@ -56,7 +81,8 @@
         </div>
       </div>
 
-      <div class="hero-orbit" data-tilt data-reveal aria-label="Biểu tượng DR Magic Hub trong mô hình quỹ đạo 3D">
+      <div class="hero-orbit" data-three-orbit data-reveal aria-label="Quả địa cầu DR Magic Hub với sáu vệ tinh chuyên môn bay xung quanh">
+        <div class="hero-orbit__three-stage" data-three-stage aria-hidden="true"></div>
         <div class="hero-orbit__halo hero-orbit__halo--outer" aria-hidden="true"></div>
         <div class="hero-orbit__halo hero-orbit__halo--inner" aria-hidden="true"></div>
         <div class="hero-orbit__satellite hero-orbit__satellite--one" aria-hidden="true"><span>DEV</span></div>
@@ -133,6 +159,11 @@
     <p>Built for Team DR · <span data-current-year></span></p>
     <p class="site-footer__status"><span></span> Knowledge signal online</p>
   </footer>
+
+  <button class="back-to-top" type="button" id="back-to-top" aria-label="Lên đầu trang" aria-hidden="true" tabindex="-1">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+    <span>Lên đầu</span>
+  </button>
 
   <noscript>
     <div class="noscript-message">Website cần JavaScript để đọc và hiển thị danh sách từ <code>docs/DR-Documents.csv</code>.</div>
