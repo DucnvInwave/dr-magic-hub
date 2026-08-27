@@ -9,6 +9,9 @@ Công việc,WORK,Bảng công việc và dữ liệu dự án,#4868d5,2,ABTest 
 Developer,DEV,Ghi chú kỹ thuật và công cụ phát triển,#38e8f5,3,DEV Notes,https://docs.google.com/spreadsheets/d/1guu5emeS7aOWRjhmcJOe_Q0wnwXirGPoQ0HlPCL0u1Q/edit?gid=0#gid=0,1,TRUE
 Developer,DEV,Ghi chú kỹ thuật và công cụ phát triển,#38e8f5,3,Github Inwave ORG,https://github.com/orgs/inwave-studio/repositories,3,TRUE
 Developer,DEV,Ghi chú kỹ thuật và công cụ phát triển,#38e8f5,3,DEV Workflows,https://github.com/iw-dr-team/docs,2,TRUE
+Developer,DEV,Firebase Console,#38e8f6,3,Firebase DR1,https://console.firebase.google.com/project/dancing-road/overview,4,TRUE
+Developer,DEV,Firebase Console,#38e8f7,3,Firebase DR2,https://console.firebase.google.com/project/dr22-ml9k/overview,5,TRUE
+Developer,DEV,Unity ID - My Seats,#38e8f8,3,Unity ID - My Seats,https://id.unity.com/en/subscriptions,6,TRUE
 Game Designer,GD,Tài liệu và template thiết kế game,#ff775f,4,Game Design Document Template,https://amanotesjsc.atlassian.net/wiki/spaces/THE/pages/5324701741/GDD+Template+v2,1,TRUE
 Artist,ART,Quy trình và tài nguyên dành cho artist,#cf318f,5,Workflow: 3D character production,https://docs.google.com/presentation/d/1QuFcQEGdlVPdQtelxoFJStu6-g5qvGD05FHpZw7jUdY,1,TRUE
 Artist,ART,Quy trình và tài nguyên dành cho artist,#cf318f,5,Workflow: 3D Animation Faster With Blender,https://docs.google.com/document/d/1K-UuQPq64V573oaVzZalB-anKZjMk9NSfRNgWccfj7c,2,TRUE
@@ -16,3 +19,6 @@ QC,QC,Tài liệu kiểm thử và theo dõi chất lượng,#ffe04b,6,SDK Versi
 QC,QC,Tài liệu kiểm thử và theo dõi chất lượng,#ffe04b,6,Event Tracking DR2,https://docs.google.com/spreadsheets/d/1GAHz7LWiteIRE7ZjEMYgtnExBZrSz5gc8I6wYNzqQlQ/edit?gid=1332782936#gid=1332782936,3,TRUE
 QC,QC,Tài liệu kiểm thử và theo dõi chất lượng,#ffe04b,6,Team QC,https://drive.google.com/drive/u/0/folders/1qi-S1vBYqev9p4xpPQ7ydTLNQ8Wpz5P8,4,TRUE
 QC,QC,Tài liệu kiểm thử và theo dõi chất lượng,#ffe04b,6,Event Tracking DR,https://docs.google.com/spreadsheets/d/1l6xSZxfSUcz1ocBKYiYSfxUtgbWepuXdtjLOyqmRhXQ/edit?gid=1332782936#gid=1332782936,2,TRUE
+Inwave,IW,Tài liệu công ty,#66CCFF,7,INCOIN,https://docs.google.com/spreadsheets/d/1WdKiuFDxbSVrps8eEj1svvDzEKu3HsMlE07AxBspHVQ/edit?gid=751493286#gid=751493286,1,TRUE
+Inwave,IW,Cổng thông tin công ty,#66CCFF,7,Inwave Portal,https://portal.inwave.vn/,2,TRUE
+Inwave,IW,Bảng chuyên cần,#66CCFF,7,BCCC,https://docs.google.com/spreadsheets/d/1bGyh9EJYus4Ws3fqsAmnVxDFHOaKTGUH7Tk2yg7Jl1M/edit?gid=1600201308#gid=1600201308,3,TRUE
