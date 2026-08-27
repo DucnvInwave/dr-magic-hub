@@ -26,13 +26,13 @@ Thư mục deploy là `dist/`. Không mở trực tiếp `index.html` bằng `fi
 
 ## Nguồn dữ liệu
 
-Website ưu tiên tải CSV từ Apps Script deployment dành cho người dùng Inwave:
+Website ưu tiên tải CSV từ Apps Script deployment:
 
-`https://script.google.com/a/macros/inwave.vn/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec`
+`https://script.google.com/macros/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec`
 
 Vì website chạy trên GitHub Pages và gọi Apps Script cross-origin, Web App cần quyền truy cập **Anyone** để trình duyệt đọc dữ liệu ổn định. Chế độ **Anyone within Inwave Studio** có thể chuyển hướng người dùng tới đăng nhập và bị trình duyệt chặn cookie bên thứ ba; muốn giữ dữ liệu riêng tư cần đưa frontend về cùng domain Inwave hoặc dùng một backend/proxy có xác thực.
 
-Apps Script đang đọc sheet `DR-Documents-Personal` trong Google Sheet có ID `11hk8kl_FETTGTl925f7QOlt0TA-mkEcQxWSGOvHyGPk`. Khi endpoint không truy cập được, website tự động dùng `datas/DR-Documents-Personal.csv` làm dữ liệu dự phòng.
+Apps Script đang đọc sheet `DR-Documents-Personal` trong Google Sheet có ID `11hk8kl_FETTGTl925f7QOlt0TA-mkEcQxWSGOvHyGPk`. Khi endpoint không truy cập được, website chuyển ngay sang `datas/DR-Documents-Personal.csv` làm dữ liệu dự phòng.
 
 CSV cần tối thiểu ba cột `Group,Tên,Link`. Các cột `DocumentOrder` và `Active` được dùng để sắp xếp, ẩn/hiện tài liệu. Các dòng để trống `Group` sẽ tự động thuộc nhóm gần nhất phía trên; dòng hoàn toàn trống sẽ được bỏ qua.
 
