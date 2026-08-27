@@ -10,7 +10,7 @@
     (function () {
       try {
         const savedTheme = localStorage.getItem("dr-magic-hub-theme");
-        const preferredTheme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        const preferredTheme = "dark";
         document.documentElement.dataset.theme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : preferredTheme;
       } catch (_error) {
         document.documentElement.dataset.theme = "dark";
