@@ -7,14 +7,14 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
   const APPS_SCRIPT_PUBLIC_URL = "https://script.google.com/macros/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec";
   const CATALOG_SOURCES = [
     {
-      label: "Apps Script Inwave",
-      url: APPS_SCRIPT_DOMAIN_URL,
-      credentials: "include"
-    },
-    {
       label: "Apps Script công khai",
       url: APPS_SCRIPT_PUBLIC_URL,
       credentials: "omit"
+    },
+    {
+      label: "Apps Script Inwave",
+      url: APPS_SCRIPT_DOMAIN_URL,
+      credentials: "include"
     },
     {
       label: "CSV local",

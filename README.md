@@ -30,7 +30,7 @@ Website ưu tiên tải CSV từ Apps Script deployment dành cho người dùng
 
 `https://script.google.com/a/macros/inwave.vn/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec`
 
-Web App cần được deploy với quyền thực thi phù hợp và quyền truy cập **Anyone within Inwave Studio**. Người dùng phải đăng nhập tài khoản Workspace `@inwave.vn`; website cũng thử URL công khai chuẩn như một phương án dự phòng.
+Vì website chạy trên GitHub Pages và gọi Apps Script cross-origin, Web App cần quyền truy cập **Anyone** để trình duyệt đọc dữ liệu ổn định. Chế độ **Anyone within Inwave Studio** có thể chuyển hướng người dùng tới đăng nhập và bị trình duyệt chặn cookie bên thứ ba; muốn giữ dữ liệu riêng tư cần đưa frontend về cùng domain Inwave hoặc dùng một backend/proxy có xác thực.
 
 Apps Script đang đọc sheet `DR-Documents-Personal` trong Google Sheet có ID `11hk8kl_FETTGTl925f7QOlt0TA-mkEcQxWSGOvHyGPk`. Khi endpoint không truy cập được, website tự động dùng `datas/DR-Documents-Personal.csv` làm dữ liệu dự phòng.
 
