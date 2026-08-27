@@ -9,12 +9,14 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
     {
       label: "Apps Script công khai",
       url: APPS_SCRIPT_PUBLIC_URL,
-      credentials: "omit"
+      credentials: "omit",
+      cacheBust: true
     },
     {
       label: "Apps Script Inwave",
       url: APPS_SCRIPT_DOMAIN_URL,
-      credentials: "include"
+      credentials: "include",
+      cacheBust: true
     },
     {
       label: "CSV local",
@@ -36,6 +38,8 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
   let revealObserver;
   let navigationLockTimer;
   let backToTopFrame;
+  let catalogCategories = [];
+  let catalogView = "grid";
 
   function parseCsv(text) {
     if (typeof text !== "string") {
@@ -250,6 +254,7 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
     card.className = `resource-card${resource.validUrl ? "" : " resource-card--unavailable"}`;
     card.style.setProperty("--card-index", index);
     card.dataset.tilt = "";
+    card.dataset.searchText = normalizeSearchText(`${resource.name} ${resource.url} ${category.name} ${category.code}`);
 
     if (resource.validUrl) {
       card.href = resource.url;
@@ -350,6 +355,7 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
   }
 
   function renderCatalog(categories) {
+    catalogCategories = categories;
     dom.nav.replaceChildren();
     dom.sections.replaceChildren();
     const navFragment = document.createDocumentFragment();
@@ -370,6 +376,8 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
     dom.sections.setAttribute("aria-busy", "false");
     dom.status.hidden = true;
     dom.error.hidden = true;
+    applyCatalogView(catalogView, false);
+    applyCatalogSearch();
     setupCategoryNavigation();
     setupRevealAnimations();
     setupTiltEffects();
@@ -387,7 +395,7 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
     const timeout = window.setTimeout(() => controller.abort(), 8000);
 
     try {
-      const requestUrl = source.label === "Apps Script"
+      const requestUrl = source.cacheBust
         ? `${source.url}${source.url.includes("?") ? "&" : "?"}_=${Date.now()}`
         : source.url;
       const response = await fetch(requestUrl, {
@@ -553,6 +561,125 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
+  function normalizeSearchText(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  }
+
+  function applyCatalogSearch() {
+    const query = normalizeSearchText(dom.search?.value);
+    const sections = Array.from(dom.sections.querySelectorAll(".category-section"));
+    let visibleResources = 0;
+    let visibleCategories = 0;
+
+    sections.forEach((section) => {
+      const cards = Array.from(section.querySelectorAll(".resource-card"));
+      let sectionResourceCount = 0;
+
+      cards.forEach((card) => {
+        const matches = !query || card.dataset.searchText.includes(query);
+        card.hidden = !matches;
+        if (matches) {
+          sectionResourceCount += 1;
+          visibleResources += 1;
+        }
+      });
+
+      const sectionVisible = !query || sectionResourceCount > 0;
+      section.hidden = !sectionVisible;
+      if (sectionVisible) {
+        visibleCategories += 1;
+      }
+
+      const category = catalogCategories.find((item) => item.slug === section.dataset.section);
+      const totalResources = category?.resources.length || cards.length;
+      const count = section.querySelector(".category-section__count");
+      if (count) {
+        count.textContent = query
+          ? `${sectionResourceCount} / ${totalResources} tài nguyên`
+          : `${totalResources} tài nguyên`;
+      }
+
+      const navLink = dom.nav.querySelector(`[data-category="${section.dataset.section}"]`);
+      if (navLink) {
+        navLink.hidden = !sectionVisible;
+      }
+    });
+
+    const totalResources = catalogCategories.reduce((total, category) => total + category.resources.length, 0);
+    dom.searchResult.textContent = query
+      ? `${visibleResources} kết quả trong ${visibleCategories} nhóm`
+      : `${totalResources} tài liệu trong ${catalogCategories.length} nhóm`;
+    dom.noResults.hidden = !query || visibleResources > 0;
+
+    const visibleLinks = Array.from(dom.nav.querySelectorAll(".orbit-nav__link:not([hidden])"));
+    const activeVisible = visibleLinks.some((link) => link.classList.contains("is-active"));
+    if (!activeVisible && visibleLinks[0]) {
+      dom.nav.querySelectorAll(".orbit-nav__link").forEach((link) => {
+        const active = link === visibleLinks[0];
+        link.classList.toggle("is-active", active);
+        if (active) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+  }
+
+  function applyCatalogView(view, persist = true) {
+    catalogView = view === "list" ? "list" : "grid";
+    dom.sections.classList.toggle("is-list-view", catalogView === "list");
+    dom.viewButtons.forEach((button) => {
+      const active = button.dataset.catalogView === catalogView;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+
+    if (persist) {
+      try {
+        localStorage.setItem("dr-magic-hub-catalog-view", catalogView);
+      } catch (_error) {
+        // The view still changes when storage is unavailable.
+      }
+    }
+  }
+
+  function setupCatalogControls() {
+    try {
+      catalogView = localStorage.getItem("dr-magic-hub-catalog-view") === "list" ? "list" : "grid";
+    } catch (_error) {
+      catalogView = "grid";
+    }
+
+    dom.viewButtons.forEach((button) => {
+      button.addEventListener("click", () => applyCatalogView(button.dataset.catalogView));
+    });
+    dom.search.addEventListener("input", applyCatalogSearch);
+    dom.clearSearch.addEventListener("click", () => {
+      dom.search.value = "";
+      applyCatalogSearch();
+      dom.search.focus();
+    });
+    document.addEventListener("keydown", (event) => {
+      const target = event.target;
+      const isTyping = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable;
+      if (event.key === "/" && !isTyping && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        event.preventDefault();
+        dom.search.focus();
+      }
+      if (event.key === "Escape" && target === dom.search && dom.search.value) {
+        dom.search.value = "";
+        applyCatalogSearch();
+      }
+    });
+
+    applyCatalogView(catalogView, false);
+  }
+
   function applyTheme(theme, persist = true) {
     const normalizedTheme = theme === "light" ? "light" : "dark";
     document.documentElement.dataset.theme = normalizedTheme;
@@ -608,6 +735,11 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
     dom.themeToggle = document.getElementById("theme-toggle");
     dom.themeLabel = document.querySelector("[data-theme-label]");
     dom.backToTop = document.getElementById("back-to-top");
+    dom.search = document.getElementById("resource-search");
+    dom.searchResult = document.getElementById("catalog-search-result");
+    dom.noResults = document.getElementById("catalog-no-results");
+    dom.clearSearch = document.getElementById("clear-search-button");
+    dom.viewButtons = Array.from(document.querySelectorAll("[data-catalog-view]"));
 
     document.querySelectorAll("[data-current-year]").forEach((element) => {
       element.textContent = String(new Date().getFullYear());
@@ -615,6 +747,7 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
 
     dom.retry.addEventListener("click", loadCatalog);
     setupThemeToggle();
+    setupCatalogControls();
     setupBackToTop();
     setupRevealAnimations();
     setupTiltEffects();

@@ -122,6 +122,28 @@
         <p>Mỗi trạm gom những liên kết team sử dụng thường xuyên. Chọn một nhóm để dịch chuyển nhanh hoặc cuộn để khám phá toàn bộ.</p>
       </div>
 
+      <div class="catalog-tools" data-reveal>
+        <label class="catalog-search" for="resource-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+          <span class="sr-only">Tìm kiếm tài liệu</span>
+          <input id="resource-search" type="search" placeholder="Tìm theo tên tài liệu, nhóm hoặc đường dẫn..." autocomplete="off">
+          <kbd aria-hidden="true">/</kbd>
+        </label>
+
+        <div class="catalog-view-toggle" role="group" aria-label="Kiểu hiển thị tài liệu">
+          <button class="catalog-view-toggle__button is-active" type="button" data-catalog-view="grid" aria-pressed="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <span>Thẻ</span>
+          </button>
+          <button class="catalog-view-toggle__button" type="button" data-catalog-view="list" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>
+            <span>Danh sách</span>
+          </button>
+        </div>
+
+        <p class="catalog-search__result" id="catalog-search-result" aria-live="polite">Đang tải dữ liệu...</p>
+      </div>
+
       <nav class="orbit-nav" aria-label="Điều hướng nhóm tài liệu" data-reveal>
         <div class="orbit-nav__track" id="category-nav"></div>
       </nav>
@@ -136,6 +158,13 @@
         <h3>Không thể tải danh sách tài liệu</h3>
         <p>Không thể đọc Apps Script hoặc dữ liệu dự phòng. Hãy kiểm tra quyền truy cập Workspace và file <code>datas/DR-Documents-Personal.csv</code>.</p>
         <button class="button button--secondary" type="button" id="retry-button">Thử kết nối lại</button>
+      </div>
+
+      <div class="catalog__no-results" id="catalog-no-results" hidden>
+        <span>NO MATCH</span>
+        <h3>Chưa tìm thấy tài liệu phù hợp</h3>
+        <p>Thử một từ khóa ngắn hơn hoặc kiểm tra lại tên nhóm và tài liệu.</p>
+        <button type="button" id="clear-search-button">Xóa tìm kiếm</button>
       </div>
 
       <div class="catalog__sections" id="catalog-sections" aria-busy="true"></div>
