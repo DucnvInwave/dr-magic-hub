@@ -102,6 +102,8 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
 
     const headers = rows[0].map((header) => header.trim());
     const groupIndex = headers.indexOf("Group");
+    const groupCodeIndex = headers.indexOf("GroupCode");
+    const groupDescriptionIndex = headers.indexOf("GroupDescription");
     const nameIndex = headers.indexOf("Tên");
     const linkIndex = headers.indexOf("Link");
     const activeIndex = headers.indexOf("Active");
@@ -120,6 +122,8 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
 
     rows.slice(1).forEach((cells, rowIndex) => {
       const declaredGroup = (cells[groupIndex] || "").trim();
+      const groupCode = groupCodeIndex === -1 ? "" : (cells[groupCodeIndex] || "").trim();
+      const groupDescription = groupDescriptionIndex === -1 ? "" : (cells[groupDescriptionIndex] || "").trim();
       const name = (cells[nameIndex] || "").trim();
       const url = (cells[linkIndex] || "").trim();
 
@@ -140,16 +144,25 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
         const definition = {
           name: groupName,
           slug: slugify(groupName),
-          code: "NEW",
+          code: groupCode || "NEW",
           accent: "cyan",
-          description: "Tài nguyên bổ sung mới được đồng bộ từ danh mục của team.",
+          description: groupDescription || "Tài nguyên bổ sung mới được đồng bộ từ danh mục của team.",
           resources: []
         };
         catalog.set(groupName, definition);
         extraCategories.push(groupName);
       }
 
-      catalog.get(groupName).resources.push({
+      const category = catalog.get(groupName);
+      if (extraCategories.includes(groupName)) {
+        if (groupCode && category.code === "NEW") {
+          category.code = groupCode;
+        }
+        if (groupDescription && category.description.startsWith("Tài nguyên bổ sung")) {
+          category.description = groupDescription;
+        }
+      }
+      category.resources.push({
         name: name || "Tài liệu chưa đặt tên",
         url,
         validUrl: isSafeExternalUrl(url),
