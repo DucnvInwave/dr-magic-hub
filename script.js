@@ -679,7 +679,7 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
     dom.themeToggle.setAttribute("aria-pressed", String(normalizedTheme === "light"));
     dom.themeToggle.setAttribute("aria-label", normalizedTheme === "light" ? "Chuyển sang giao diện tối" : "Chuyển sang giao diện sáng");
     dom.themeLabel.textContent = normalizedTheme === "light" ? "Sáng" : "Tối";
-    document.querySelector('meta[name="theme-color"]').content = normalizedTheme === "light" ? "#edf4f0" : "#071426";
+    document.querySelector('meta[name="theme-color"]').content = normalizedTheme === "light" ? "#dce8e3" : "#071426";
 
     if (persist) {
       try {
