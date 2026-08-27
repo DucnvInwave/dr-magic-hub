@@ -28,7 +28,9 @@ Thư mục deploy là `dist/`. Không mở trực tiếp `index.html` bằng `fi
 
 Website ưu tiên tải CSV từ Apps Script deployment:
 
-`https://script.google.com/a/macros/inwave.vn/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec`
+`https://script.google.com/macros/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec`
+
+Web App cần được deploy với quyền thực thi phù hợp và quyền truy cập **Anyone** để GitHub Pages có thể đọc dữ liệu mà không cần đăng nhập Workspace.
 
 Apps Script đang đọc sheet `DR-Documents-Personal` trong Google Sheet có ID `11hk8kl_FETTGTl925f7QOlt0TA-mkEcQxWSGOvHyGPk`. Khi endpoint không truy cập được, website tự động dùng `datas/DR-Documents-Personal.csv` làm dữ liệu dự phòng.
 

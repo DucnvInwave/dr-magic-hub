@@ -3,12 +3,12 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
 (function () {
   "use strict";
 
-  const APPS_SCRIPT_CATALOG_URL = "https://script.google.com/a/macros/inwave.vn/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec";
+  const APPS_SCRIPT_CATALOG_URL = "https://script.google.com/macros/s/AKfycbxvX0HRBZU4cEUmRbzBudCXrphisefKXTn58VTJbFlmeUYRTadwclH7yq63XGZg_UN9_w/exec";
   const CATALOG_SOURCES = [
     {
       label: "Apps Script",
       url: APPS_SCRIPT_CATALOG_URL,
-      credentials: "include"
+      credentials: "omit"
     },
     {
       label: "CSV local",
@@ -368,7 +368,10 @@ import fallbackCatalogUrl from "./datas/DR-Documents-Personal.csv?url&no-inline"
     const timeout = window.setTimeout(() => controller.abort(), 8000);
 
     try {
-      const response = await fetch(source.url, {
+      const requestUrl = source.label === "Apps Script"
+        ? `${source.url}${source.url.includes("?") ? "&" : "?"}_=${Date.now()}`
+        : source.url;
+      const response = await fetch(requestUrl, {
         cache: "no-store",
         credentials: source.credentials,
         signal: controller.signal
